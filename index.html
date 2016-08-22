@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>RSS Reader</title>
+    <link rel="stylesheet" href="/css/style.min.css"/>
+</head>
+<body ng-app="RssReaderApp">
+
+<div ng-controller="RssCtrl">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div class="b-block type-logo">
+                    <img src="/images/logo.png">
+                </div>
+                <div class="b-block type-adding-feed">
+                    <button type="button" class="btn btn-primary" ng-click="openModal()">Добавить ленту</button>
+                </div>
+                <hr class="separator">
+                <div>
+                    <div>
+                        <input type="text" id="feedName" placeholder="Название ленты" ng-model="feedName">
+                    </div>
+                    <div>
+                        <input type="text" id="feedLink" placeholder="Ссылка на RSS ленту" ng-model="feedLink">
+                    </div>
+                    <div>
+                        <select id="feedCategory" ng-model="feedCategory" ng-options="category.name for category in categories track by category.id">
+                            <option class="disabled" value="">Выберите категорию</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button ng-click="addFeed()">Добавить ленту</button>
+                    </div>
+                </div>
+                <hr class="separator">
+                <ul class="nav nav-sidebar">
+                    <li class="nav-sidebar-item" ng-repeat="category in categories track by category.id">
+                        <div class="category-item" ng-click="changeCategoryStatus(category)">
+                            <span class="glyphicon glyphicon-record b-icon icon-type-{{category.color}}"></span> {{category.name}} <span class="glyphicon glyphicon-trash pull-right b-icon icon-delete" ng-click="deleteCategory(category)"></span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="b-block type-adding-category">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-record b-icon icon-type-{{categoryColor}}"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ng-repeat="color in colors">
+                                    <a href="#" ng-click="setCategoryColor(color)">
+                                        <span class="glyphicon glyphicon-record b-icon icon-type-{{color}}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <input type="text" class="form-control" ng-model="categoryName" ng-enter>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    {{greeting}}
+</div>
+
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<script src="/bower_components/angular/angular.min.js"></script>
+<script src="/app/app.js"></script>
+</body>
+</html>

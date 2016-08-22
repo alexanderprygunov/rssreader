@@ -1,0 +1,28 @@
+.b-icon {
+  &.icon-type {
+    &-red {
+      color: #ff606f;
+    }
+    &-orange {
+      color: #ff9860;
+    }
+    &-yellow {
+      color: #ffef60;
+    }
+    &-green {
+      color: #5cc45c;
+    }
+    &-cyan {
+      color: #60fff4;
+    }
+    &-blue {
+      color: #68bee9;
+    }
+    &-purple {
+      color: #cc91ff;
+    }
+  }
+  &.icon-delete {
+    color: #909090;
+  }
+}

@@ -1,0 +1,52 @@
+.b-block {
+  @include clearfix;
+
+  &.type-logo {
+    margin: 0 0 40px 0;
+  }
+
+  &.type-adding-category {
+    .input-group {
+      .input-group-btn {
+        button {
+          padding: 6px 10px;
+          background: #464a54;
+          border: none;
+          outline: none;
+        }
+        .dropdown-menu {
+          min-width: 0;
+          width: 34px;
+          padding: 0;
+          background: #464a54;
+          border: none;
+
+          li {
+            a {
+              padding: 7px 0;
+              text-align: center;
+
+              &:hover {
+                background: #5e6371;
+              }
+            }
+          }
+        }
+
+        &.open {
+          button {
+            background: #5e6371;
+          }
+        }
+      }
+      .form-control {
+        height: 31px;
+        outline: none;
+        border: none;
+        background: #30333a;
+        color: #ffffff;
+        box-shadow: none;
+      }
+    }
+  }
+}
