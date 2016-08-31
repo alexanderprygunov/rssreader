@@ -1,6 +1,6 @@
 var App = angular.module('RssReaderApp', []);
 
-App.controller("RssCtrl", ['$scope', '$window', function($scope, $window){
+App.controller("RssCtrl", ['$scope', 'RssService', '$window', '$sce', function($scope, $rssService, $window, $sce){
 
     $scope.categories = JSON.parse(localStorage.getItem('categories'));
 
@@ -49,11 +49,11 @@ App.controller("RssCtrl", ['$scope', '$window', function($scope, $window){
         }
     };
 
-    /*
-    $scope.changeCategoryStatus = function (category) {
-
+    $scope.showFeedList = function (category) {
+        $scope.news = [];
+        $scope.feedListActiveCategory = category.id;
+        $scope.feedList = category.items;
     };
-    */
 
     $scope.addFeed = function () {
         $scope.getCategoryById(feedCategory.value);
@@ -63,83 +63,45 @@ App.controller("RssCtrl", ['$scope', '$window', function($scope, $window){
         });
     };
 
+    $scope.deleteFeed = function (feedItem) {
+        currentFeedCategory = $scope.getCategoryById($scope.feedListActiveCategory);
+        currentFeedCategory.items.splice(currentFeedCategory.items.indexOf(feedItem), 1);
+    };
+
+    $scope.loadNews = function(feedItemLink) {
+        $rssService.parseFeed(feedItemLink).then(function(res){
+            $scope.news = res.data.responseData.feed.entries;
+            for (var i = 0; i < $scope.news.length; i++) {
+                $scope.news[i].dateConverted = new Date($scope.news[i].publishedDate);
+            }
+        });
+    };
+
+    $scope.setDescriptionStatus = function (newsItem) {
+        var statusClass = 'state-active';
+
+        if (newsItem.status != statusClass) {
+            newsItem.status = statusClass;
+        }
+        else {
+            newsItem.status = '';
+        }
+    };
+
+    $scope.renderHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    };
+
     $window.onunload = function () {
         localStorage.setItem('categories', JSON.stringify($scope.categories));
     };
 
 }]);
 
-
-App.directive("ngEnter", function  () {
-    return function (scope, elem) {
-        $(elem).keyup(function  (e) {
-            if (e.keyCode === 13) {
-                scope.$apply(function  () {
-                    scope.addCategory();
-                });
-            }
-        });
-    };
-});
-
-
-
-
-
-/*
-App.controller("RssCtrl", ['$scope', 'RssService', function ($scope, Feed) {
-
-    // add category
-    $scope.savedCategory = localStorage.getItem('categoryList');
-    $scope.categoryList = (localStorage.getItem('categoryList') !== null) ? JSON.parse($scope.savedCategory) : [];
-    localStorage.setItem('categoryList', JSON.stringify($scope.categoryList));
-
-    $scope.newCategory = null;
-
-    $scope.addCategory = function () {
-        $scope.categoryList.push({
-            name: $scope.newCategory,
-            color: $scope.newCategoryColor
-        });
-        $scope.newCategory = '';
-        $scope.newCategoryColor = '';
-        localStorage.setItem('categoryList', JSON.stringify($scope.categoryList));
-    };
-
-    // add feed
-    $scope.savedFeed = localStorage.getItem('feedList');
-    $scope.feedList = (localStorage.getItem('feedList') !== null) ? JSON.parse($scope.savedFeed) : [];
-    localStorage.setItem('feedList', JSON.stringify($scope.feedList));
-
-    $scope.newFeed = null;
-
-    $scope.addFeed = function () {
-        $scope.feedList.push({
-            name: $scope.newFeed,
-            link: $scope.newFeedLink,
-            category: $scope.newFeedCategory.name
-        });
-        $scope.newFeed = '';
-        $scope.newFeedLink = '';
-        $scope.newFeedCategory = '';
-        localStorage.setItem('feedList', JSON.stringify($scope.feedList));
-    };
-
-    // read rss
-    $scope.loadFeed = function(e){
-        Feed.parseFeed($scope.feedSrc).then(function(res){
-            //console.log($scope.feedSrc);
-            $scope.feeds = res.data.responseData.feed.entries;
-        });
-    };
-
-}]);
-
-App.factory('RssService',['$http',function($http){
+App.factory('RssService', ['$http', function($http){
     return {
         parseFeed : function(url){
             return $http.jsonp('//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=100&callback=JSON_CALLBACK&q=' + encodeURIComponent(url));
         }
     }
 }]);
-*/

@@ -5,6 +5,41 @@
     margin: 0 0 40px 0;
   }
 
+  &.type-adding-feed {
+    text-align: center;
+  }
+
+  &.type-search {
+    margin-bottom: 10px;
+
+    .control-search {
+      max-width: 320px;
+    }
+  }
+
+  &.type-content {
+    background: #ffffff;
+    border: 1px solid #c8d3de;
+    border-radius: 4px;
+    width: 100%;
+    overflow: hidden;
+
+    .content-cell {
+
+      &.cell-feedlist {
+        border-right: 1px solid #c8d3de;
+        float: left;
+        width: 320px;
+      }
+
+      &.cell-news {
+        border-left: 1px solid #c8d3de;
+        padding: 20px;
+        margin: 0 0 0 319px;
+      }
+    }
+  }
+
   &.type-adding-category {
     .input-group {
       .input-group-btn {
@@ -13,6 +48,7 @@
           background: #464a54;
           border: none;
           outline: none;
+          border-top: 1px solid #62656e;
         }
         .dropdown-menu {
           min-width: 0;
@@ -40,12 +76,13 @@
         }
       }
       .form-control {
-        height: 31px;
+        height: 32px;
         outline: none;
         border: none;
         background: #30333a;
         color: #ffffff;
         box-shadow: none;
+        border-radius: 0;
       }
     }
   }

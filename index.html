@@ -11,14 +11,14 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="b-sidebar">
                 <div class="b-block type-logo">
                     <img src="/images/logo.png">
                 </div>
                 <div class="b-block type-adding-feed">
-                    <button type="button" class="btn btn-primary" ng-click="openModal()">Добавить ленту</button>
+                    <button type="button" class="btn btn-add" ng-click="openModal()">Добавить ленту</button>
                 </div>
-                <hr class="separator">
+                <hr class="b-separator">
                 <div>
                     <div>
                         <input type="text" id="feedName" placeholder="Название ленты" ng-model="feedName">
@@ -35,11 +35,11 @@
                         <button ng-click="addFeed()">Добавить ленту</button>
                     </div>
                 </div>
-                <hr class="separator">
+                <hr class="b-separator">
                 <ul class="nav nav-sidebar">
                     <li class="nav-sidebar-item" ng-repeat="category in categories track by category.id">
-                        <div class="category-item" ng-click="changeCategoryStatus(category)">
-                            <span class="glyphicon glyphicon-record b-icon icon-type-{{category.color}}"></span> {{category.name}} <span class="glyphicon glyphicon-trash pull-right b-icon icon-delete" ng-click="deleteCategory(category)"></span>
+                        <div class="category-item" ng-click="showFeedList(category)">
+                            <span class="glyphicon glyphicon-record b-icon icon-type-{{category.color}}"></span> {{category.name}} ({{category.items.length}}) <span class="glyphicon glyphicon-trash b-icon icon-delete" ng-click="deleteCategory(category)"></span>
                         </div>
                     </li>
                 </ul>
@@ -57,25 +57,44 @@
                                 </li>
                             </ul>
                         </div>
-                        <input type="text" class="form-control" ng-model="categoryName" ng-enter>
+                        <form ng-submit="addCategory()">
+                            <input type="text" class="form-control" placeholder="Введите название..." ng-model="categoryName" ng-enter>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-
+            <div class="b-main">
+                <div class="b-block type-search">
+                    <input type="text" class="form-control control-search" ng-model="search.title" placeholder="Поиск по новостям...">
+                </div>
+                <div class="b-block type-content">
+                    <div class="content-cell cell-feedlist">
+                        <div class="b-feedlist">
+                            <div class="feedlist-item" ng-repeat="feedItem in feedList track by $index" ng-click="loadNews(feedItem.link)">
+                                <div class="item-name">{{feedItem.name}}</div>
+                                <div class="item-link">{{feedItem.link}}</div>
+                                <div class="item-controls">
+                                    <span class="glyphicon glyphicon-pencil icon-control"></span>
+                                    <span class="glyphicon glyphicon-trash icon-control" ng-click="deleteFeed(feedItem)"></span>
+                                </div>
+                                <span class="glyphicon glyphicon-chevron-right b-icon icon-feed-arrow"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-cell cell-news">
+                        <div class="b-news">
+                            <div class="news-item" ng-repeat="newsItem in news | filter:search">
+                                <h3 class="item-title"><a target="_blank" href="{{newsItem.link}}">{{newsItem.title}}</a></h3>
+                                <div class="item-date">{{newsItem.dateConverted | date: "dd.MM.y' в ' H:mm"}}</div>
+                                <a class="btn btn-default" ng-click="setDescriptionStatus(newsItem)">Читать описание</a>
+                                <div class="item-description" ng-class="newsItem.status" ng-bind-html="renderHtml(newsItem.content)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-    {{greeting}}
 </div>
 
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>

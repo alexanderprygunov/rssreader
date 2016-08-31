@@ -1,48 +1,7 @@
-.sidebar {
-  position: fixed;
-  top:0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  display: block;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  background-color: #1d2027;
+body {
+  background: #f0f1f5;
 }
 
-.nav-sidebar {
-  margin-right: -20px; /* 20px padding */
-  margin-bottom: 20px;
-  margin-left: -20px;
-
-  .nav-sidebar-item {
-    padding: 13px 25px;
-    cursor: pointer;
-    color: #ffffff;
-
-    .icon-delete {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .b-icon {
-      margin-right: 8px;
-    }
-
-    &:hover, &.state-active {
-      background: #2b2e35;
-    }
-
-    &:hover {
-      .icon-delete {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-  }
-}
-
-.main {
-  padding: 20px;
+.b-main {
+  padding: 15px 20px 15px 260px;
 }

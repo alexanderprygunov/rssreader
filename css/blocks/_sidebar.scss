@@ -1,0 +1,53 @@
+.b-sidebar {
+  position: fixed;
+  top:0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  background-color: #1d2027;
+  width: 240px;
+
+  .nav-sidebar {
+    margin-right: -20px; /* 20px padding */
+    margin-bottom: 20px;
+    margin-left: -20px;
+
+    .nav-sidebar-item {
+      padding: 10px 35px 10px 25px;
+      cursor: pointer;
+      color: #ffffff;
+
+      .b-icon {
+        margin-right: 5px;
+
+        &.icon-delete {
+          opacity: 0;
+          visibility: hidden;
+          margin: 0;
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          margin-top: -7px;
+        }
+      }
+
+      &:hover, &.state-active {
+        background: #2b2e35;
+      }
+
+      &:hover {
+        .b-icon {
+          &.icon-delete {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
+

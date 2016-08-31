@@ -17,12 +17,19 @@
     }
     &-blue {
       color: #68bee9;
-    }
+    } 
     &-purple {
       color: #cc91ff;
     }
   }
   &.icon-delete {
     color: #909090;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+  &.icon-feed-arrow {
+    color: #7fb1c6;
   }
 }

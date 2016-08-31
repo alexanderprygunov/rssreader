@@ -1,0 +1,38 @@
+.b-news {
+
+  .news-item {
+    border-bottom: 1px solid #dfdfdf;
+    margin: 0 0 25px 0;
+    padding: 0 0 25px 0;
+
+    &:last-child {
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+
+    .item-title {
+      margin: 0 0 15px 0;
+    }
+
+    .item-date {
+      margin: 0 0 20px 0;
+      color: #7a7f8d;
+      font-size: 13px;
+    }
+
+    .item-description {
+      padding: 0;
+      display: none;
+
+      &.state-active {
+        padding: 35px 0 0 0;
+        display: block;
+      }
+    }
+
+    img {
+      max-width: 100%;
+    }
+  }
+}

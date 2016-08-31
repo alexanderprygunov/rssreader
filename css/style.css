@@ -5814,6 +5814,52 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.btn {
+  border-radius: 2px; }
+  .btn.btn-add {
+    color: #ffffff;
+    background: #3ba5d1;
+    border-top: 1px solid #56cee6; }
+
+.b-feedlist .feedlist-item {
+  padding: 15px 30px 30px 15px;
+  border-bottom: 1px solid #c8d3de;
+  cursor: pointer;
+  position: relative; }
+  .b-feedlist .feedlist-item:last-child {
+    border: none; }
+  .b-feedlist .feedlist-item .item-controls {
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+    font-size: 0;
+    opacity: 0;
+    visibility: hidden; }
+    .b-feedlist .feedlist-item .item-controls .icon-control {
+      margin-right: 10px;
+      font-size: 14px;
+      color: #909090; }
+      .b-feedlist .feedlist-item .item-controls .icon-control:last-child {
+        margin: 0; }
+      .b-feedlist .feedlist-item .item-controls .icon-control:hover {
+        color: #7fb1c6; }
+  .b-feedlist .feedlist-item .b-icon.icon-feed-arrow {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    margin-top: -7px; }
+  .b-feedlist .feedlist-item:hover {
+    background: #f4f5f5; }
+    .b-feedlist .feedlist-item:hover .item-controls {
+      visibility: visible;
+      opacity: 1; }
+  .b-feedlist .feedlist-item .item-name {
+    color: #1f7ca3;
+    margin-bottom: 15px; }
+  .b-feedlist .feedlist-item .item-link {
+    font-size: 13px;
+    color: #7a7f8d; }
+
 .b-block:before, .b-block:after {
   content: " ";
   display: table; }
@@ -5824,11 +5870,35 @@ button.close {
 .b-block.type-logo {
   margin: 0 0 40px 0; }
 
+.b-block.type-adding-feed {
+  text-align: center; }
+
+.b-block.type-search {
+  margin-bottom: 10px; }
+  .b-block.type-search .control-search {
+    max-width: 320px; }
+
+.b-block.type-content {
+  background: #ffffff;
+  border: 1px solid #c8d3de;
+  border-radius: 4px;
+  width: 100%;
+  overflow: hidden; }
+  .b-block.type-content .content-cell.cell-feedlist {
+    border-right: 1px solid #c8d3de;
+    float: left;
+    width: 320px; }
+  .b-block.type-content .content-cell.cell-news {
+    border-left: 1px solid #c8d3de;
+    padding: 20px;
+    margin: 0 0 0 319px; }
+
 .b-block.type-adding-category .input-group .input-group-btn button {
   padding: 6px 10px;
   background: #464a54;
   border: none;
-  outline: none; }
+  outline: none;
+  border-top: 1px solid #62656e; }
 
 .b-block.type-adding-category .input-group .input-group-btn .dropdown-menu {
   min-width: 0;
@@ -5846,12 +5916,36 @@ button.close {
   background: #5e6371; }
 
 .b-block.type-adding-category .input-group .form-control {
-  height: 31px;
+  height: 32px;
   outline: none;
   border: none;
   background: #30333a;
   color: #ffffff;
-  box-shadow: none; }
+  box-shadow: none;
+  border-radius: 0; }
+
+.b-news .news-item {
+  border-bottom: 1px solid #dfdfdf;
+  margin: 0 0 25px 0;
+  padding: 0 0 25px 0; }
+  .b-news .news-item:last-child {
+    margin: 0;
+    padding: 0;
+    border: none; }
+  .b-news .news-item .item-title {
+    margin: 0 0 15px 0; }
+  .b-news .news-item .item-date {
+    margin: 0 0 20px 0;
+    color: #7a7f8d;
+    font-size: 13px; }
+  .b-news .news-item .item-description {
+    padding: 0;
+    display: none; }
+    .b-news .news-item .item-description.state-active {
+      padding: 35px 0 0 0;
+      display: block; }
+  .b-news .news-item img {
+    max-width: 100%; }
 
 .b-icon.icon-type-red {
   color: #ff606f; }
@@ -5865,7 +5959,7 @@ button.close {
 .b-icon.icon-type-green {
   color: #5cc45c; }
 
-.b-icon.icon-type-light-blue {
+.b-icon.icon-type-cyan {
   color: #60fff4; }
 
 .b-icon.icon-type-blue {
@@ -5876,8 +5970,19 @@ button.close {
 
 .b-icon.icon-delete {
   color: #909090; }
+  .b-icon.icon-delete:hover {
+    color: #ffffff; }
 
-.sidebar {
+.b-icon.icon-feed-arrow {
+  color: #7fb1c6; }
+
+body {
+  background: #f0f1f5; }
+
+.b-main {
+  padding: 15px 20px 15px 260px; }
+
+.b-sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -5888,27 +5993,34 @@ button.close {
   overflow-x: hidden;
   overflow-y: auto;
   /* Scrollable contents if viewport is shorter than content. */
-  background-color: #1d2027; }
+  background-color: #1d2027;
+  width: 240px; }
+  .b-sidebar .nav-sidebar {
+    margin-right: -20px;
+    /* 20px padding */
+    margin-bottom: 20px;
+    margin-left: -20px; }
+    .b-sidebar .nav-sidebar .nav-sidebar-item {
+      padding: 10px 35px 10px 25px;
+      cursor: pointer;
+      color: #ffffff; }
+      .b-sidebar .nav-sidebar .nav-sidebar-item .b-icon {
+        margin-right: 5px; }
+        .b-sidebar .nav-sidebar .nav-sidebar-item .b-icon.icon-delete {
+          opacity: 0;
+          visibility: hidden;
+          margin: 0;
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          margin-top: -7px; }
+      .b-sidebar .nav-sidebar .nav-sidebar-item:hover, .b-sidebar .nav-sidebar .nav-sidebar-item.state-active {
+        background: #2b2e35; }
+      .b-sidebar .nav-sidebar .nav-sidebar-item:hover .b-icon.icon-delete {
+        opacity: 1;
+        visibility: visible; }
 
-.nav-sidebar {
-  margin-right: -20px;
-  /* 20px padding */
-  margin-bottom: 20px;
-  margin-left: -20px; }
-  .nav-sidebar .nav-sidebar-item {
-    padding: 13px 25px;
-    cursor: pointer;
-    color: #ffffff; }
-    .nav-sidebar .nav-sidebar-item .icon-delete {
-      opacity: 0;
-      visibility: hidden; }
-    .nav-sidebar .nav-sidebar-item .b-icon {
-      margin-right: 8px; }
-    .nav-sidebar .nav-sidebar-item:hover, .nav-sidebar .nav-sidebar-item.state-active {
-      background: #2b2e35; }
-    .nav-sidebar .nav-sidebar-item:hover .icon-delete {
-      opacity: 1;
-      visibility: visible; }
-
-.main {
-  padding: 20px; }
+.b-separator {
+  height: 0;
+  border-top: 1px solid #0a0a0a;
+  border-bottom: 1px solid #31343a; }
