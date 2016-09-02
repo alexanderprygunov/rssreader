@@ -1,94 +1,76 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" ng-app="RssReaderApp">
 <head>
     <meta charset="UTF-8">
     <title>RSS Reader</title>
     <link rel="stylesheet" href="/css/style.min.css"/>
 </head>
-<body ng-app="RssReaderApp">
+<body ng-controller="RssCtrl" ng-cloak>
 
-<div ng-controller="RssCtrl">
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="b-sidebar">
-                <div class="b-block type-logo">
-                    <img src="/images/logo.png">
-                </div>
-                <div class="b-block type-adding-feed">
-                    <button type="button" class="btn btn-add" ng-click="openModal()">Добавить ленту</button>
-                </div>
-                <hr class="b-separator">
-                <div>
-                    <div>
-                        <input type="text" id="feedName" placeholder="Название ленты" ng-model="feedName">
+<div class="container-fluid">
+    <div class="row">
+        <div class="b-sidebar">
+            <div class="b-block type-logo">
+                <img src="/images/logo.png">
+            </div>
+            <div class="b-block type-adding-feed">
+                <button type="button" class="btn btn-add" data-toggle="modal" data-target="#feedAdd" ng-click="addFeed()">Добавить ленту</button>
+            </div>
+            <hr class="b-separator">
+            <ul class="nav nav-sidebar">
+                <li class="nav-sidebar-item active-{{category.active}}" ng-repeat="category in categories track by category.id">
+                    <div class="category-item" ng-click="showFeedList(category)">
+                        <span class="glyphicon glyphicon-record b-icon icon-type-{{category.color}}"></span> {{category.name}} ({{category.items.length}}) <span class="glyphicon glyphicon-trash b-icon icon-delete" ng-click="deleteCategory(category)"></span>
                     </div>
-                    <div>
-                        <input type="text" id="feedLink" placeholder="Ссылка на RSS ленту" ng-model="feedLink">
+                </li>
+            </ul>
+            <div class="b-block type-adding-category">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-record b-icon icon-type-{{categoryColor}}"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="(colorId, color) in colors">
+                                <a href="#" ng-click="setCategoryColor(colorId)">
+                                    <span class="glyphicon glyphicon-record b-icon icon-type-{{color}}"></span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <select id="feedCategory" ng-model="feedCategory" ng-options="category.name for category in categories track by category.id">
-                            <option class="disabled" value="">Выберите категорию</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button ng-click="addFeed()">Добавить ленту</button>
-                    </div>
-                </div>
-                <hr class="b-separator">
-                <ul class="nav nav-sidebar">
-                    <li class="nav-sidebar-item" ng-repeat="category in categories track by category.id">
-                        <div class="category-item" ng-click="showFeedList(category)">
-                            <span class="glyphicon glyphicon-record b-icon icon-type-{{category.color}}"></span> {{category.name}} ({{category.items.length}}) <span class="glyphicon glyphicon-trash b-icon icon-delete" ng-click="deleteCategory(category)"></span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="b-block type-adding-category">
-                    <div class="input-group">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="glyphicon glyphicon-record b-icon icon-type-{{categoryColor}}"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="color in colors">
-                                    <a href="#" ng-click="setCategoryColor(color)">
-                                        <span class="glyphicon glyphicon-record b-icon icon-type-{{color}}"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <form ng-submit="addCategory()">
-                            <input type="text" class="form-control" placeholder="Введите название..." ng-model="categoryName" ng-enter>
-                        </form>
-                    </div>
+                    <form ng-submit="addCategory()">
+                        <input type="text" class="form-control" placeholder="Введите название..." ng-model="categoryName">
+                    </form>
                 </div>
             </div>
-            <div class="b-main">
-                <div class="b-block type-search">
-                    <input type="text" class="form-control control-search" ng-model="search.title" placeholder="Поиск по новостям...">
-                </div>
-                <div class="b-block type-content">
-                    <div class="content-cell cell-feedlist">
-                        <div class="b-feedlist">
-                            <div class="feedlist-item" ng-repeat="feedItem in feedList track by $index" ng-click="loadNews(feedItem.link)">
-                                <div class="item-name">{{feedItem.name}}</div>
-                                <div class="item-link">{{feedItem.link}}</div>
-                                <div class="item-controls">
-                                    <span class="glyphicon glyphicon-pencil icon-control"></span>
-                                    <span class="glyphicon glyphicon-trash icon-control" ng-click="deleteFeed(feedItem)"></span>
-                                </div>
-                                <span class="glyphicon glyphicon-chevron-right b-icon icon-feed-arrow"></span>
+            <p class="text-danger">{{deleteCategoryAlert}}</p>
+        </div>
+        <div class="b-main">
+            <div class="b-block type-search">
+                <input type="text" class="form-control control-search" ng-model="search.title" placeholder="Поиск по новостям...">
+            </div>
+            <div class="b-block type-content">
+                <div class="content-cell cell-feedlist">
+                    <div class="b-feedlist">
+                        <div class="feedlist-item" ng-repeat="feedItem in feedList track by $index" ng-click="loadNews(feedItem.link)">
+                            <div class="item-name">{{feedItem.name}}</div>
+                            <div class="item-link">{{feedItem.link}}</div>
+                            <div class="item-controls">
+                                <span class="glyphicon glyphicon-pencil icon-control" ng-click="editFeed(feedItem)" data-toggle="modal" data-target="#feedAdd"></span>
+                                <span class="glyphicon glyphicon-trash icon-control" ng-click="deleteFeed(feedItem)"></span>
                             </div>
+                            <span class="glyphicon glyphicon-chevron-right b-icon icon-feed-arrow"></span>
                         </div>
                     </div>
-                    <div class="content-cell cell-news">
-                        <div class="b-news">
-                            <div class="news-item" ng-repeat="newsItem in news | filter:search">
-                                <h3 class="item-title"><a target="_blank" href="{{newsItem.link}}">{{newsItem.title}}</a></h3>
-                                <div class="item-date">{{newsItem.dateConverted | date: "dd.MM.y' в ' H:mm"}}</div>
-                                <a class="btn btn-default" ng-click="setDescriptionStatus(newsItem)">Читать описание</a>
-                                <div class="item-description" ng-class="newsItem.status" ng-bind-html="renderHtml(newsItem.content)"></div>
-                            </div>
+                </div>
+                <div class="content-cell cell-news">
+                    <div class="b-news">
+                        <div class="news-item" ng-repeat="newsItem in news | filter:search">
+                            <h3 class="item-title"><a target="_blank" href="{{newsItem.link}}">{{newsItem.title}}</a></h3>
+                            <div class="item-viewed">{{newsItem.viewed}}</div>
+                            <div class="item-date">{{newsItem.dateConverted | date: "dd.MM.y' в ' H:mm"}}</div>
+                            <a class="btn btn-default" ng-click="setDescriptionStatus(newsItem, $index)">Читать описание</a>
+                            <div class="item-description" ng-class="newsItem.status" ng-bind-html="renderHtml(newsItem.content)"></div>
                         </div>
                     </div>
                 </div>
@@ -97,9 +79,52 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="feedAdd" tabindex="-1" role="dialog" aria-labelledby="feedAddLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="feedModal" class="form-horizontal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="feedAddLabel">{{modalTitle}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="feedName" class="col-sm-4 control-label">Название ленты</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="feedName" placeholder="Название ленты" ng-model="feedName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedName" class="col-sm-4 control-label">URL</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="feedLink" placeholder="URL" ng-model="feedLink" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedName" class="col-sm-4 control-label">Группа</label>
+                        <div class="col-sm-8">
+                            <select id="feedCategory" class="form-control"
+                                    ng-init="feedCategory = categories[0]"
+                                    ng-model="feedCategory"
+                                    ng-options="category.name for category in categories track by category.id">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
+                    <button type="submit" class="btn btn-primary" ng-click="addFeedSuccess()" ng-disabled="feedModal.$invalid" ng-show="modalAddButton == true"  data-dismiss="modal">Добавить</button>
+                    <button type="submit" class="btn btn-primary" ng-click="editFeedSuccess()" ng-disabled="feedModal.$invalid" ng-show="modalEditButton == true" data-dismiss="modal">Редактировать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
 <script src="/bower_components/angular/angular.min.js"></script>
-<script src="/app/app.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>

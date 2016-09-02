@@ -20,9 +20,17 @@ gulp.task('serve', $.serve({
     port: 3000
 }));
 
+gulp.task('js', function() {
+    return gulp.src('./app/**/*.js')
+        .pipe($.concat('app.js'))
+        .pipe(gulp.dest('./js/'));
+});
+
 gulp.task('watch', function() {
     gulp.watch('css/**/*.{scss,sass}', ['sass']);
+    gulp.watch('app/**/*.{js}', ['js']);
+    gulp.watch('app/app.{js}', ['js']);
 });
 
 // Creating a default task
-gulp.task('default', ['watch', 'serve']);
+gulp.task('default', ['watch', 'serve', 'sass', 'js']);
